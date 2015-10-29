@@ -20,7 +20,12 @@ getIP((err, ip_address) => {
 
 function updateNamecheap(records) {
 	records.forEach((record) => {
-		let url = `https://dynamicdns.park-your-domain.com/update?host=${record.sub_domain}&domain=${record.domain}&password=${config.NAMECHEAP_DYNAMIC_DNS_PASSWORD}&ip=${record.ip_address}`;
+		let password = config.passwords[record.domain];
+		if(!password) {
+			throw `No password specified for ${record.domain}`;
+		}
+
+		let url = `https://dynamicdns.park-your-domain.com/update?host=${record.sub_domain}&domain=${record.domain}&password=${password}&ip=${record.ip_address}`;
 
 		request(url, (error, response, body) => {
 			if (!error && response.statusCode == 200) {
