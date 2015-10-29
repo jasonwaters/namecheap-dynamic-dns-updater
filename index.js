@@ -1,12 +1,8 @@
 'use strict';
 
-const config = require('./config.js');
-
 let request = require('request');
-
-
-
 let getIP = require('external-ip')();
+const config = require('./config.js');
 
 
 getIP((err, ip_address) => {
@@ -22,9 +18,8 @@ getIP((err, ip_address) => {
 });
 
 
-
 function updateNamecheap(records) {
-	config.records.forEach((record) => {
+	records.forEach((record) => {
 		let url = `https://dynamicdns.park-your-domain.com/update?host=${record.sub_domain}&domain=${record.domain}&password=${config.NAMECHEAP_DYNAMIC_DNS_PASSWORD}&ip=${record.ip_address}`;
 
 		request(url, (error, response, body) => {
